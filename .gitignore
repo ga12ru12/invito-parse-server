@@ -28,12 +28,3 @@ node_modules
 
 # Emacs
 *~
-
-# Vim
-*.swp
-*.swo
-
-*.pem
-account_key.json
-*.key
-*.crt

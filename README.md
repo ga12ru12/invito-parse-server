@@ -1,174 +1,133 @@
-# Docker ❤ Parse
-[![Docker Pulls](https://img.shields.io/docker/pulls/yongjhih/parse-server.svg)](https://hub.docker.com/r/yongjhih/parse-server/)
-[![Docker Stars](https://img.shields.io/docker/stars/yongjhih/parse-server.svg)](https://hub.docker.com/r/yongjhih/parse-server/)
-[![Docker Tag](https://img.shields.io/github/tag/yongjhih/docker-parse-server.svg)](https://hub.docker.com/r/yongjhih/parse-server/tags/)
-[![License](https://img.shields.io/github/license/yongjhih/docker-parse-server.svg)](https://github.com/yongjhih/docker-parse-server/raw/master/LICENSE.txt)
-[![Travis CI](https://img.shields.io/travis/yongjhih/docker-parse-server.svg)](https://travis-ci.org/yongjhih/docker-parse-server)
-[![Gitter Chat](https://img.shields.io/gitter/room/yongjhih/docker-parse-server.svg)](https://gitter.im/yongjhih/docker-parse-server)
+# parse-server-example
 
-## :cloud: One-Click Deploy
+Example project using the [parse-server](https://github.com/ParsePlatform/parse-server) module on Express.
+
+Read the full Parse Server guide here: https://github.com/ParsePlatform/parse-server/wiki/Parse-Server-Guide
+
+### For Local Development
+
+* Make sure you have at least Node 4.3. `node --version`
+* Clone this repo and change directory to it.
+* `npm install`
+* Install mongo locally using http://docs.mongodb.org/master/tutorial/install-mongodb-on-os-x/
+* Run `mongo` to connect to your database, just to make sure it's working. Once you see a mongo prompt, exit with Control-D
+* Run the server with: `npm start`
+* By default it will use a path of /parse for the API routes.  To change this, or use older client SDKs, run `export PARSE_MOUNT=/1` before launching the server.
+* You now have a database named "dev" that contains your Parse data
+* Install ngrok and you can test with devices
+
+### Getting Started With Heroku + mLab Development
+
+#### With the Heroku Button
+
 [![Deploy](https://www.herokucdn.com/deploy/button.png)](https://heroku.com/deploy)
+
+#### Without It
+
+* Clone the repo and change directory to it
+* Log in with the [Heroku Toolbelt](https://toolbelt.heroku.com/) and create an app: `heroku create`
+* Use the [mLab addon](https://elements.heroku.com/addons/mongolab): `heroku addons:create mongolab:sandbox --app YourAppName`
+* By default it will use a path of /parse for the API routes.  To change this, or use older client SDKs, run `heroku config:set PARSE_MOUNT=/1`
+* Deploy it with: `git push heroku master`
+
+### Getting Started With AWS Elastic Beanstalk
+
+#### With the Deploy to AWS Button
+
+<a title="Deploy to AWS" href="https://console.aws.amazon.com/elasticbeanstalk/home?region=us-west-2#/newApplication?applicationName=ParseServer&solutionStackName=Node.js&tierName=WebServer&sourceBundleUrl=https://s3.amazonaws.com/elasticbeanstalk-samples-us-east-1/eb-parse-server-sample/parse-server-example.zip" target="_blank"><img src="http://d0.awsstatic.com/product-marketing/Elastic%20Beanstalk/deploy-to-aws.png" height="40"></a>
+
+#### Without It
+
+* Clone the repo and change directory to it
+* Log in with the [AWS Elastic Beanstalk CLI](https://docs.aws.amazon.com/elasticbeanstalk/latest/dg/eb-cli3-install.html), select a region, and create an app: `eb init`
+* Create an environment and pass in MongoDB URI, App ID, and Master Key: `eb create --envvars DATABASE_URI=<replace with URI>,APP_ID=<replace with Parse app ID>,MASTER_KEY=<replace with Parse master key>`
+
+### Getting Started With Microsoft Azure App Service
+
+#### With the Deploy to Azure Button
+
 [![Deploy to Azure](http://azuredeploy.net/deploybutton.png)](https://azuredeploy.net/)
-[![Deploy to AWS](https://d0.awsstatic.com/product-marketing/Elastic%20Beanstalk/deploy-to-aws.png)](https://console.aws.amazon.com/elasticbeanstalk/home?region=us-west-2#/newApplication?applicationName=ParseServer&solutionStackName=Node.js&tierName=WebServer&sourceBundleUrl=https%3A%2F%2Fs3.amazonaws.com%2Felasticbeanstalk-samples-us-east-1%2Feb-parse-server-sample%2Fparse-server-example.zip)
+
+#### Without It
+
+A detailed tutorial is available here:
+[Azure welcomes Parse developers](https://azure.microsoft.com/en-us/blog/azure-welcomes-parse-developers/)
+
+
+### Getting Started With Google App Engine
+
+1. Clone the repo and change directory to it 
+1. Create a project in the [Google Cloud Platform Console](https://console.cloud.google.com/).
+1. [Enable billing](https://console.cloud.google.com/project/_/settings) for your project.
+1. Install the [Google Cloud SDK](https://cloud.google.com/sdk/).
+1. Setup a MongoDB server.  You have a few options:
+  1. Create a Google Compute Engine virtual machine with [MongoDB pre-installed](https://cloud.google.com/launcher/?q=mongodb).
+  1. Use [MongoLab](https://mongolab.com/google/) to create a free MongoDB deployment on Google Cloud Platform.
+1. Modify `app.yaml` to update your environment variables.
+1. Delete `Dockerfile`
+1. Deploy it with `gcloud preview app deploy`
+
+A detailed tutorial is available here:
+[Running Parse server on Google App Engine](https://cloud.google.com/nodejs/resources/frameworks/parse-server)
+
+### Getting Started With Scalingo
+
+#### With the Scalingo button
+
 [![Deploy to Scalingo](https://cdn.scalingo.com/deploy/button.svg)](https://my.scalingo.com/deploy)
-[![Deploy to Docker Cloud](https://github.com/yongjhih/docker-parse-server/raw/master/art/deploy-to-docker-cloud.png)](https://cloud.docker.com/stack/deploy/?repo=https://github.com/yongjhih/docker-parse-server)
 
-## :star: Features
-- [x] Parse Server with MongoDB
-- [x] [Parse Cloud Code](https://github.com/yongjhih/parse-cloud-code) via git with auto rebuild
-- [x] Parse Push Notification : iOS, Android
-- [x] Parse Live Query
-- [x] [Parse Dashboard](https://github.com/yongjhih/docker-parse-dashboard)
-- [x] Tested Docker Image
-- [x] Deploy with Docker
-- [x] Deploy with Docker Compose
-- [x] Deploy with one click
-- [x] GraphQL support `GRAPHQL_SUPPORT=true`, `GRAPHQL_SCHEMA=YOUR_SCHEMA_URL` (default to `./cloud/graphql/schema.js`)
+#### Without it
 
-## :tv: Overview
-![Parse Server Diagram](https://github.com/yongjhih/docker-parse-server/raw/master/art/parse-server-diagram.png)
+* Clone the repo and change directory to it
+* Log in with the [Scalingo CLI](http://cli.scalingo.com/) and create an app: `scalingo create my-parse`
+* Use the [Scalingo MongoDB addon](https://scalingo.com/addons/scalingo-mongodb): `scalingo addons-add scalingo-mongodb free`
+* Setup MongoDB connection string: `scalingo env-set DATABASE_URI='$SCALINGO_MONGO_URL'`
+* By default it will use a path of /parse for the API routes. To change this, or use older client SDKs, run `scalingo env-set PARSE_MOUNT=/1`
+* Deploy it with: `git push scalingo master`
 
-## :see_no_evil: Sneak Preview
-[![Screencast](https://github.com/yongjhih/docker-parse-server/raw/master/art/docker-parse-server.gif)](https://youtu.be/1bYWSPEZL2g)
+### Getting Started With OpenShift Online (Next Gen)
 
-## :rocket: Deployments
-### :paperclip: Deploy with Docker
-```sh
-$ docker run -d -p 27017:27017 --name mongo mongo
+1. Register for a free [OpenShift Online (Next Gen) account](http://www.openshift.com/devpreview/register.html)
+1. Create a project in the [OpenShift Online Console](https://console.preview.openshift.com/console/).
+1. Install the [OpenShift CLI](https://docs.openshift.com/online/getting_started/beyond_the_basics.html#btb-installing-the-openshift-cli).
+1. Add the Parse Server template to your project: `oc create -f https://raw.githubusercontent.com/ParsePlatform/parse-server-example/master/openshift.json`
+1. Deploy Parse Server from the web console
+  1. Open your project in the [OpenShift Online Console](https://console.preview.openshift.com/console/):
+  1. Click **Add to Project** from the top navigation
+  1. Scroll down and select **NodeJS > Parse Server**
+  1. (Optionally) Update the Parse Server settings (parameters)
+  1. Click **Create**
 
-$ docker run -d                                \
-             -e APP_ID=${APP_ID}         \
-             -e MASTER_KEY=${MASTER_KEY} \
-             -p 1337:1337                      \
-             --link mongo                      \
-             --name parse-server               \
-             yongjhih/parse-server
+A detailed tutorial is available here:
+[Running Parse Server on OpenShift Online (Next Gen)](https://blog.openshift.com/parse-server/)
 
-$ docker run -d                                \
-             -p 2022:22                        \
-             --volumes-from parse-server       \
-             --name parse-cloud-code-git       \
-             yongjhih/parse-server:git
+# Using it
 
-# Test parse-server
-$ curl -X POST \
-  -H "X-Parse-Application-Id: {appId}" \
-  -H "Content-Type: application/json" \
-  -d '{}' \
-  http://localhost:1337/parse/functions/hello
+Before using it, you can access a test page to verify if the basic setup is working fine [http://localhost:1337/test](http://localhost:1337/test).
+Then you can use the REST API, the JavaScript SDK, and any of our open-source SDKs:
 
-$ docker run -d \
-             -e APP_ID=${APP_ID}         \
-             -e MASTER_KEY=${MASTER_KEY} \
-             -e SERVER_URL=http://localhost:1337/parse \
-             -p 4040:4040                      \
-             --link parse-server               \
-             --name parse-dashboard            \
-             yongjhih/parse-dashboard
+Example request to a server running locally:
 
-# The above command will asuume you will later create a ssh 
-# and log into the dashboard remotely in production. 
-#  However, to see the dashboard instanly using either
-#  localhost:4040 or someip:4040(if hosted somewhere remotely)
-# then you need to add extra option to allowInsecureHTTP like
-# It is also required that you create username and password 
-# before accessing the portal else you cant get in
-
-$  docker run -d \
-             -e APP_ID=$(APP_ID)\
-             -e MASTER_KEY=$(MASTER_KEY)\
-             -e SERVER_URL=http://localhost:1337/parse \
-             -e PARSE_DASHBOARD_ALLOW_INSECURE_HTTP=1  \
-             -e USER1=yourUsername  \
-             -e USER1_PASSWORD=yourUsernamesPassword \
-             -p 4040:4040                      \
-             --link parse-server               \
-             --name parse-dashboard            \
-             yongjhih/parse-dashboard
-
-```
-### :paperclip: Deploy with Docker Compose
-```sh
-$ wget https://github.com/yongjhih/docker-parse-server/raw/master/docker-compose.yml
-$ APP_ID=YOUR_APP_ID MASTER_KEY=YOUR_MASTER_KEY PARSE_DASHBOARD_ALLOW_INSECURE_HTTP=1 SERVER_URL=http://localhost:1337/parse docker-compose up -d
-```
-> #### Note 
-* We use `PARSE_DASHBOARD_ALLOW_INSECURE_HTTP=1` to allow insecure via development environment.
-> * `$ wget https://github.com/yongjhih/docker-parse-server/raw/master/docker-compose.yml -O - | APP_ID=YOUR_APP_ID MASTER_KEY=YOUR_MASTER_KEY docker-compose up -d -f - # not supported for docker-compose container`
-
-### :paperclip: Deploy to Cloud Services
-* [Heroku + Mongolab Development](ADVANCE.md#getting-started-with-heroku--mongolab-development)
-* [AWS Elastic Beanstalk](ADVANCE.md#getting-started-with-aws-elastic-beanstalk)
-* [Microsoft Azure App Service](ADVANCE.md#getting-started-with-microsoft-azure-app-service)
-* [Google App Engine](ADVANCE.md#getting-started-with-google-app-engine)
-* [Scalingo](ADVANCE.md#getting-started-with-scalingo)
-
-## :zap: Advance topics
-* [How to use with existing mongodb with DATABASE_URI](ADVANCE.md#how-to-use-with-existing-mongodb-with-database_uri)
-* [How to use with existing parse-cloud-code](ADVANCE.md#how-to-use-with-existing-parse-cloud-code)
-* [How to specify parse-server version](ADVANCE.md#how-to-specify-parse-server-version)
-* [How to specify latest commit of parse-server](ADVANCE.md#how-to-specify-latest-commit-of-parseplatformparse-server-of-image)
-* [How to start parse dashboard as standalone](ADVANCE.md#how-to-start-parse-dashboard-as-standalone)
-* [How to setup SSL with letsencrypt](ADVANCE.md#how-to-setup-ssl-with-letsencrypt)
-* [How to setup push notification](ADVANCE.md#how-to-setup-push-notification)
-* [How to integrate parse-cloud-code image on GitHub and DockerHub](ADVANCE.md#how-to-integrate-parse-cloud-code-image-on-github-and-dockerhub)
-* [How to config Docker](ADVANCE.md#how-to-config-docker)
-* [How to config Docker Compose](ADVANCE.md#how-to-config-docker-compose)
-* [How to import ssh-key from github](ADVANCE.md#how-to-import-ssh-key-from-github)
-
-## :fire: Server Side Developments
-How to push cloud code to server  
-[![Screencast - git](https://github.com/yongjhih/docker-parse-server/raw/master/art/docker-parse-server-git.gif)](https://youtu.be/9YwWbiRyPUU)
-```sh
-# This command wil create a SSH keys for you as
-#  ~/.ssh/id_rsa.pub and another private key.
-# you can leave the options balnk by pressing enter.
-
-$ ssh-keygen -t rsa
-
-# If git container name is `parse-cloud-code-git`
-$ docker exec -i parse-cloud-code-git ssh-add-key < ~/.ssh/id_rsa.pub
-
-# port 2022, repo path is `/parse-cloud-code`
-$ git clone ssh://git@localhost:2022/parse-cloud-code
-$ cd parse-cloud-code
-$ echo "Parse.Cloud.define('hello', function(req, res) { res.success('Hi, git'); });" > main.js
-$ git add main.js && git commit -m 'Update main.js'
-$ git push origin master
-
-$ curl -X POST \
-  -H "X-Parse-Application-Id: ${APP_ID}" \
-  -H "Content-Type: application/json" \
-  -d '{}' \
-  http://localhost:1337/parse/functions/hello
-```
-
-## :iphone: Client Side Developments
-You can use the REST API, the JavaScript SDK, and any of our open-source SDKs:
-
-### :paperclip: curl example
-```
+```curl
 curl -X POST \
-  -H "X-Parse-Application-Id: YOUR_APP_ID" \
+  -H "X-Parse-Application-Id: myAppId" \
   -H "Content-Type: application/json" \
   -d '{"score":1337,"playerName":"Sean Plott","cheatMode":false}' \
   http://localhost:1337/parse/classes/GameScore
-
+  
 curl -X POST \
-  -H "X-Parse-Application-Id: YOUR_APP_ID" \
+  -H "X-Parse-Application-Id: myAppId" \
   -H "Content-Type: application/json" \
   -d '{}' \
   http://localhost:1337/parse/functions/hello
+```
 
-curl -H "X-Parse-Application-Id: YOUR_APP_ID" \
-     -H "X-Parse-Master-Key: YOUR_MASTER_KEY" \
-     -H "Content-Type: application/json" \
-     http://localhost:1337/parse/serverInfo
-```
-### :paperclip: JavaScript example
-```
-Parse.initialize('YOUR_APP_ID','unused');
+Example using it via JavaScript:
+
+```javascript
+Parse.initialize('myAppId','unused');
 Parse.serverURL = 'https://whatever.herokuapp.com';
+
 var obj = new Parse.Object('GameScore');
 obj.set('score',1337);
 obj.save().then(function(obj) {
@@ -179,67 +138,27 @@ obj.save().then(function(obj) {
   }, function(err) {console.log(err); });
 }, function(err) { console.log(err); });
 ```
-### :paperclip: Android example
-```
+
+Example using it on Android:
+```java
 //in your application class
 
 Parse.initialize(new Parse.Configuration.Builder(getApplicationContext())
-        .applicationId("YOUR_APP_ID")
-        .clientKey("YOUR_CLIENT_ID")
-        .server("http://YOUR_SERVER_URL/parse/")   // '/' important after 'parse'
-        .build());
+  .applicationId("myAppId")
+  .server("http://myServerUrl/parse/")   // '/' important after 'parse'
+  .build());
 
-  ParseObject testObject = new ParseObject("TestObject");
-  testObject.put("foo", "bar");
-  testObject.saveInBackground();
-
+ParseObject testObject = new ParseObject("TestObject");
+testObject.put("foo", "bar");
+testObject.saveInBackground();
 ```
-### :paperclip: iOS example
+Example using it on iOS (Swift):
+```swift
+//in your AppDelegate
+
+Parse.initializeWithConfiguration(ParseClientConfiguration(block: { (configuration: ParseMutableClientConfiguration) -> Void in
+  configuration.server = "https://<# Your Server URL #>/parse/" // '/' important after 'parse'
+  configuration.applicationId = "<# Your APP_ID #>"
+}))
 ```
-class AppDelegate: UIResponder, UIApplicationDelegate {
-    func application(application: UIApplication, didFinishLaunchingWithOptions launchOptions: [NSObject:AnyObject]?) -> Bool {
-        let configuration = ParseClientConfiguration {
-            $0.applicationId = "YOUR_APP_ID"
-            $0.clientKey = "YOUR_CLIENT_ID"
-            $0.server = "http://YOUR_SERVER_URL/parse"
-        }
-        Parse.initializeWithConfiguration(configuration)
-    }
-}
-```
-
-### :paperclip: GraphQL
-Run with GraphQL support.
-```shell
-GRAPHQL_SUPPORT=true APP_ID=YOUR_APP_ID MASTER_KEY=YOUR_MASTER_KEY SERVER_URL=http://localhost:1337/parse docker-compose up -d
-```
-> Make sure `./cloud/graphql/schema.js` is pushed to cloud code.  
-> Then navigate to [http://localhost:1337/graphql?query=%7B%0A%20%20hello%0A%7D%0A](http://localhost:1337/graphql?query=%7B%0A%20%20hello%0A%7D%0A)  
-
-![](./art/graphql.png)
-
-## :eyes: See Also
-* https://github.com/ParsePlatform/parse-server
-* http://blog.parse.com/announcements/introducing-parse-server-and-the-database-migration-tool/
-* https://parse.com/docs/server/guide#migrating
-* https://hub.docker.com/r/yongjhih/parse-server/
-* https://github.com/yongjhih/parse-cloud-code
-* https://hub.docker.com/r/yongjhih/parse-cloud-code/
-* https://medium.com/cowbear-coder/migration-of-parse-server-with-docker-part1-87034cc29978
-* https://github.com/yongjhih/docker-parse-dashboard
-* [Docker ❤ Parse](https://medium.com/@katopz/docker-parse-782d27761e24)
-* [DigitalOcean ❤ Parse](https://medium.com/@katopz/digitalocean-parse-e68d8b71e8eb)
-
-## :thumbsup: Contributors & Credits
-[![didierfranc](https://github.com/didierfranc.png?size=40)](https://github.com/didierfranc)
-[![ArnaudValensi](https://github.com/ArnaudValensi.png?size=40)](https://github.com/ArnaudValensi)
-[![gerhardsletten](https://github.com/gerhardsletten.png?size=40)](https://github.com/gerhardsletten)
-[![acinader](https://github.com/acinader.png?size=40)](https://github.com/acinader)
-[![kandelvijaya](https://github.com/kandelvijaya.png?size=40)](https://github.com/kandelvijaya)
-[<img src="https://github.com/mjdev.png?size=40" data-canonical-src="https://github.com/mjdev.png?size=40" width="40" height="40"/>](https://github.com/mjdev)
-[![vitaminwater](https://github.com/vitaminwater.png?size=40)](https://github.com/vitaminwater)
-[<img src="https://github.com/euklid.png?size=40" data-canonical-src="https://github.com/euklid.png?size=40" width="40" height="40"/>](https://github.com/euklid)
-[<img src="https://github.com/walkerlee.png?size=40" data-canonical-src="https://github.com/walkerlee.png?size=40" width="40" height="40"/>](https://github.com/walkerlee)
-[<img src="https://github.com/chainkite.png?size=40" data-canonical-src="https://github.com/chainkite.png?size=40" width="40" height="40"/>](https://github.com/chainkite)
-[![cleever](https://github.com/cleever.png?size=40)](https://github.com/cleever)
-[![katopz](https://github.com/katopz.png?size=40)](https://github.com/katopz)
+You can change the server URL in all of the open-source SDKs, but we're releasing new builds which provide initialization time configuration of this property.
