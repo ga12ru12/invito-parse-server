@@ -4,7 +4,7 @@ var links = require('docker-links').parseLinks(process.env);
 var fs = require('fs');
 var AzureStorageAdapter = require('parse-server-azure-storage').AzureStorageAdapter;
 
-if (process.env.NODE_ENV !== 'production') {
+if (process.env.NODE_ENV !== 'production' && process.env.NODE_ENV !== 'test') {
     require('dotenv').config();
 }
 

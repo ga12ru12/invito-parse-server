@@ -1,27 +1,50 @@
 {
-  "name": "parse-server-example",
-  "version": "1.4.0",
-  "description": "An example Parse API server using the parse-server module",
-  "main": "index.js",
-  "repository": {
-    "type": "git",
-    "url": "https://github.com/ParsePlatform/parse-server-example"
-  },
-  "license": "MIT",
-  "dependencies": {
-    "express": "~4.11.x",
-    "kerberos": "~0.0.x",
-    "parse": "~1.8.0",
-    "parse-server": "*",
-    "parse-server-azure-storage": "^1.1.0",
-    "nodemon": "^1.8.1",
-    "docker-links": "^1.0.2",
-    "dotenv": "^2.0.0"
-  },
-  "scripts": {
-    "start": "nodemon --watch /parse/cloud index.js"
-  },
-  "engines": {
-    "node": ">=4.3"
-  }
+    "name": "parse-server-template",
+    "version": "1.4.0",
+    "description": "An example Parse API server using the parse-server module",
+    "main": "index.js",
+    "repository": {
+        "type": "git",
+        "url": "https://gitlab.com/enouvo/parse-server-template"
+    },
+    "license": "MIT",
+    "dependencies": {
+        "express": "~4.11.x",
+        "kerberos": "~0.0.x",
+        "parse": "~1.8.0",
+        "parse-server": "*",
+        "parse-server-azure-storage": "^1.1.0",
+        "nodemon": "^1.8.1",
+        "better-npm-run": "0.0.13",
+        "docker-links": "^1.0.2",
+        "dotenv": "^2.0.0"
+    },
+    "scripts": {
+        "start": "better-npm-run start:dev",
+        "start:test": "better-npm-run start:test",
+        "start:prod": "better-npm-run start:prod"
+    },
+    "betterScripts": {
+        "start:dev": {
+            "command": "nodemon --watch /parse/cloud index.js",
+            "env": {
+                "NODE_ENV": "development"
+            }
+        },
+        "start:test": {
+            "command": "node index.js",
+            "env": {
+                "NODE_ENV": "test"
+            }
+        },
+        "start:prod": {
+            "command": "node index.js",
+            "env": {
+                "NODE_ENV": "production"
+            }
+        }
+    },
+    "engines": {
+        "node": ">=4.3"
+    }
 }
