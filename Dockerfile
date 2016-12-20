@@ -1,26 +1,48 @@
-FROM node:latest
+FROM node:5
 
-RUN mkdir parse
+ENV PARSE_HOME /parse
 
-ADD . /parse
-WORKDIR /parse
+#ADD . ${PARSE_HOME}
+#ADD *.js ${PARSE_HOME}/
+#ADD *.json ${PARSE_HOME}/
+
+ADD package.json ${PARSE_HOME}/
+
+ADD jsconfig.json ${PARSE_HOME}/
+
+## deployment is unnecessary
+#ADD app.json ${PARSE_HOME}/app.json # heroku
+#ADD azuredeploy.json ${PARSE_HOME}/azuredeploy.json # azure
+
+ENV CLOUD_CODE_HOME ${PARSE_HOME}/cloud
+ADD cloud/*.js $CLOUD_CODE_HOME/
+
+WORKDIR $PARSE_HOME
 RUN npm install
 
-ENV APP_ID setYourAppId
-ENV MASTER_KEY setYourMasterKey
-ENV DATABASE_URI setMongoDBURI
+ADD index.js ${PARSE_HOME}/
 
-# Optional (default : 'parse/cloud/main.js')
-# ENV CLOUD_CODE_MAIN cloudCodePath
+## ENV
+#ENV APP_ID myAppId
+#ENV MASTER_KEY myMasterKey
+#ENV DATABASE_URI mongodb://localhost:27017/dev
+#ENV CLOUD_CODE_MAIN ${CLOUD_CODE_HOME}/main.js
+#ENV PARSE_MOUNT /parse
+#ENV COLLECTION_PREFIX
+#ENV CLIENT_KEY
+#ENV REST_API_KEY
+#ENV DOTNET_KEY
+#ENV JAVASCRIPT_KEY
+#ENV DOTNET_KEY
+#ENV FILE_KEY
+#ENV FACEBOOK_APP_IDS "xx,xxx"
+#ENV SERVER_URL
+#ENV MAX_UPLOAD_SIZE
 
-# Optional (default : '/parse')
-# ENV PARSE_MOUNT mountPath
+ENV PORT 1337
 
-EXPOSE 1337
+EXPOSE $PORT
+VOLUME $CLOUD_CODE_HOME
+ENV NODE_PATH .
 
-# Uncomment if you want to access cloud code outside of your container
-# A main.js file must be present, if not Parse will not start
-
-# VOLUME /parse/cloud               
-
-CMD [ "npm", "start" ]
+CMD ["npm", "start"]
