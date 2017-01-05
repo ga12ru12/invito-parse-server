@@ -10,6 +10,8 @@ ADD package.json ${PARSE_HOME}/
 
 ADD jsconfig.json ${PARSE_HOME}/
 
+ADD public ${PARSE_HOME}/
+
 ## deployment is unnecessary
 #ADD app.json ${PARSE_HOME}/app.json # heroku
 #ADD azuredeploy.json ${PARSE_HOME}/azuredeploy.json # azure
