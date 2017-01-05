@@ -259,7 +259,25 @@ app.use(mountPath, api);
 
 // Parse Server plays nicely with the rest of your web routes
 app.get('/', function(req, res) {
-    res.status(200).send('I dream of being a web site.');
+    res.status(200).send('I dream of being a web site. Environment: ' + process.env.NODE_ENV);
+});
+
+app.get('/changes', function(req, res) {
+    res.type('text/plain');
+    res.sendFile(__dirname + '/public/changes.txt', { 'lastModified': false }, function(err) {
+        if (err) {
+            res.status(err.status).send('This page can’t be found');
+        }
+    });
+});
+
+app.get('/version', function(req, res) {
+    res.type('text/plain');
+    res.sendFile(__dirname + '/public/version.txt', { 'lastModified': false }, function(err) {
+        if (err) {
+            res.status(err.status).send('This page can’t be found');
+        }
+    });
 });
 
 
