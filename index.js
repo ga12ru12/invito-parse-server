@@ -259,7 +259,7 @@ app.use(mountPath, api);
 
 // Parse Server plays nicely with the rest of your web routes
 app.get('/', function(req, res) {
-    res.status(200).send('I dream of being a web site. Environment: ' + process.env.NODE_ENV);
+    res.status(200).send('I dream of being a web site. Environment: ' + process.env.NODE_ENV + '. App name: ' + process.env.APP_NAME);
 });
 
 app.get('/changes', function(req, res) {
