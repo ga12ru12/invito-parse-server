@@ -28,6 +28,7 @@ if (facebookAppIds) {
 
 var gcmId = process.env.GCM_ID;
 var gcmKey = process.env.GCM_KEY;
+var fcmKey = process.env.FCM_KEY;
 
 var iosPushConfigs = new Array();
 var isFile = function(f) {
@@ -109,6 +110,11 @@ if (gcmId && gcmKey) {
     pushConfig.android = {
         senderId: gcmId,
         apiKey: gcmKey
+    }
+}
+if (fcmKey) {
+    pushConfig.fcm = {
+        serverKey: fcmKey
     }
 }
 if (iosPushConfigs.length > 0) {
