@@ -1,4 +1,5 @@
+var fs = require('fs');
 
-Parse.Cloud.define('hello', function(req, res) {
-  res.success('Hi');
+fs.readdirSync(__dirname).forEach(function(filename) {
+  require('./' + filename);
 });
